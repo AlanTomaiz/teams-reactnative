@@ -2,7 +2,8 @@ import { CaretLeft } from 'phosphor-react-native'
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
-  margin-top: 50px;
+  width: 100%;
+  /* margin-top: 50px; */
 
   flex-direction: row;
   align-items: center;
@@ -19,6 +20,6 @@ export const BackButton = styled.TouchableOpacity`
 `
 
 export const BackIcon = styled(CaretLeft).attrs(({ theme }) => ({
-  size: 32,
+  size: 36,
   color: theme.COLORS.WHITE
 }))``

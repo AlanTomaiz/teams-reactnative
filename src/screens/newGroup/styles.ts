@@ -9,10 +9,11 @@ export const Container = styled.View`
 
 export const Content = styled.View`
   flex: 1;
-  align-items: center;
 `
 
 export const UsersIcon = styled(UsersThree).attrs(({ theme }) => ({
   size: 56,
   color: theme.COLORS.GREEN_700,
-}))``
+}))`
+  align-self: center;
+`
