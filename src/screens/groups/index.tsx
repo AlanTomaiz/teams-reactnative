@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { FlatList } from 'react-native'
 
@@ -10,6 +11,7 @@ import * as S from './styles'
 
 export default function Groups() {
   const [groups, setGroups] = useState<string[]>([])
+  const navigation = useNavigation()
 
   return (
     <S.Container>
@@ -27,7 +29,10 @@ export default function Groups() {
           <ListEmpty message="Que tal cadastrar a primeira turma?" />
         )}
       />
-      <Button title="Criar nova turma" />
+      <Button
+        title="Criar nova turma"
+        onPress={() => navigation.navigate('newGroup')}
+      />
     </S.Container>
   )
 }
