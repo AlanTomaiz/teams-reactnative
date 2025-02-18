@@ -1,5 +1,5 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import styled, { css } from "styled-components/native";
+import { MaterialIcons } from '@expo/vector-icons'
+import styled, { css } from 'styled-components/native'
 
 export const Container = styled.View`
   flex-direction: row;
@@ -10,6 +10,7 @@ export const Container = styled.View`
 
   background: ${({ theme }) => theme.COLORS.GRAY_500};
   border-radius: 6px;
+  margin-bottom: 8px;
 `
 
 export const Name = styled.Text`

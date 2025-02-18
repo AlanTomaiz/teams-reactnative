@@ -10,15 +10,15 @@ interface Hook {
 }
 
 export function useStorageGroups(): Hook {
-  async function getAll(): Promise<string[]> {
+  async function getAll() {
     const storage = await AsyncStorage.getItem(GROUP_COLLECTION)
-    return storage ? JSON.parse(storage) : []
+    return (storage ? JSON.parse(storage) : []) as string[]
   }
 
   async function createGroup(group: string) {
     const storedGroups = await getAll()
-    const groupAlreadExists = storedGroups.find(row => row === group)
-    if (groupAlreadExists) {
+    const groupAlreadyExists = storedGroups.find(row => row === group)
+    if (groupAlreadyExists) {
       throw new AppError('Já existe um grupo com esse nome, tente outro!')
     }
 
@@ -28,6 +28,6 @@ export function useStorageGroups(): Hook {
 
   return {
     getAll,
-    createGroup
+    createGroup,
   }
 }
