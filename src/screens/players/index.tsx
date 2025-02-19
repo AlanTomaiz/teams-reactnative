@@ -1,6 +1,6 @@
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useRef, useState } from 'react'
-import { FlatList, TextInput } from 'react-native'
+import { Alert, FlatList, TextInput } from 'react-native'
 
 import { Button, ButtonIcon } from '@components/button'
 import { Filter } from '@components/filter'
@@ -8,7 +8,9 @@ import { Header } from '@components/header'
 import { Highlight } from '@components/highlight'
 import { Input } from '@components/input'
 import { ListEmpty } from '@components/listEmpity'
+import { Loader } from '@components/loader'
 import { PlayerCard } from '@components/playerCard'
+import { useStorageGroups } from '@storage/group'
 import { Player, useStoragePlayers } from '@storage/player'
 import { HandleError } from '@utils/handleError'
 import { Container, Form, HeaderList, NumberOfPlayers } from './styles'
@@ -19,11 +21,14 @@ type RouteParams = {
 
 export default function Players() {
   const route = useRoute()
-  const { getPlayers, setPlayer } = useStoragePlayers()
+  const navigation = useNavigation()
+  const { removeGroup } = useStorageGroups()
+  const { getPlayers, setPlayer, removePlayer } = useStoragePlayers()
 
   const [team, setTeam] = useState('Time A')
   const [playerName, setPlayerName] = useState('')
   const [players, setPlayers] = useState<Player[]>([])
+  const [loading, setLoading] = useState(true)
 
   const { groupName } = route.params as RouteParams
   const inputPlayerRef = useRef<TextInput>(null)
@@ -42,10 +47,43 @@ export default function Players() {
     }
   }
 
+  async function handleRemovePlayer(playerName: string) {
+    await removePlayer(playerName, groupName)
+    fetchPlayerList()
+  }
+
+  async function handleRemoveGroup() {
+    Alert.alert(
+      'Atenção!',
+      `Você realmente deseja remover o grupo ${groupName}?`,
+      [
+        {
+          text: 'Cancelar'
+        },
+        {
+          text: 'Confirmar',
+          onPress: async () => {
+            await removeGroup(groupName)
+            navigation.navigate('groups')
+          }
+        }
+      ]
+    )
+  }
+
   async function fetchPlayerList() {
-    const storage = await getPlayers(groupName)
-    const playerList = storage.filter(row => row.team === team)
-    setPlayers(playerList)
+    try {
+      setLoading(true)
+
+      const storage = await getPlayers(groupName)
+      const playerList = storage.filter(row => row.team === team)
+      setPlayers(playerList)
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Atenção!!!', 'Falha ao buscar players, tente novamente mais tarde.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -87,13 +125,16 @@ export default function Players() {
         />
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
-      <FlatList
+      {loading ? (
+        <Loader />
+      ) : (
+        <FlatList
         data={players}
         keyExtractor={item => item.name}
         renderItem={({ item }) => (
           <PlayerCard
             name={item.name}
-            onRemove={() => console.log('CLICK')}
+            onRemove={() => handleRemovePlayer(item.name)}
           />
         )}
         ListEmptyComponent={(
@@ -104,9 +145,11 @@ export default function Players() {
           !players.length && { flex: 1 }
         ]}
       />
+      )}
       <Button
-        title="Remover Turma"
         type="DANGER"
+        title="Remover Turma"
+        onPress={handleRemoveGroup}
       />
     </Container>
   )

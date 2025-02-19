@@ -3,19 +3,15 @@
 ## 💻 Projeto
 O projeto foi desenvolvido durante as aulas de React Native da Rocketseat. O objetivo dessa aplicação é facilitar a organização de grupos de jogos, ela permite que você gerencie várias turmas, adicionando ou removendo jogadores com facilidade. A aplicação utiliza navegação em pilha e armazenamento local.
 
-## 🌐 Links úteis
-[NodeJS](https://nodejs.org/en/download)
-[Expo](https://expo.dev/)
-[Android Studio](https://developer.android.com/studio/install?hl=pt-br)
 [Figma do projeto](https://www.figma.com/community/file/1151864427495057381/ignite-teams)
 
 ## ⚙️ Funcionalidades
-- [ ] Cadastrar Grupos
-- [ ] Cadastrar Pessoas
-- [ ] Listar Grupos
-- [ ] Listar Pessoas
-- [ ] Excluir Grupos
-- [ ] Excluir Pessoas
+- [x] Cadastrar Grupos
+- [x] Cadastrar Pessoas
+- [x] Listar Grupos
+- [x] Listar Pessoas
+- [x] Excluir Grupos
+- [x] Excluir Pessoas
 
 ## 🚀 Startando projeto
 ```bash
